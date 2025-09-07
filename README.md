@@ -19,3 +19,12 @@ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.backup_original
 sudo vim /etc/ssh/sshd_config
 ```
 редактируем так по шаблону ( см файл )
+
+``` # Полная перезагрузка
+sudo systemctl daemon-reload
+sudo systemctl restart ssh
+sudo ss -lntp | grep ssh
+```
+2) Rsyslog
+
+3) Logrotate
