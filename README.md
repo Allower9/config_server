@@ -2,8 +2,57 @@
 цель - настроить базовую безопаность сервера, настроить логи и их ротацию + скрипты для автоматизации и тп
 
 
-1) Настройка ssh 
-на данном сервере пришлось полностью переустановить ssh
+1) Настройка ssh
+```Базовая настройка UFW
+
+# Сброс правил (опционально)
+sudo ufw reset
+```
+
+``` # Разрешаем все исходящие соединения
+sudo ufw default allow outgoing
+```
+```# Временно разрешаем все входящие (для безопасной настройки)
+sudo ufw default allow incoming
+```
+```# Включаем UFW
+sudo ufw enable
+```
+```2. Добавление правил доступа
+
+# Разрешаем SSH (обязательно сначала!)
+sudo ufw allow 22/tcp comment 'Current SSH port'
+
+# Разрешаем порты для сервисов
+sudo ufw allow 5000/tcp comment 'Backend API'
+sudo ufw allow 80/tcp comment 'HTTP frontend'
+sudo ufw allow 443/tcp comment 'HTTPS frontend'
+sudo ufw allow 2222/tcp comment 'New SSH port'
+```
+```# Проверяем правила
+sudo ufw status numbered
+```
+```3. Смена SSH порта (опционально)
+
+# Редактируем конфиг SSH
+sudo vim /etc/ssh/sshd_config
+# Меняем: Port 22 → Port 2222
+
+# Перезагружаем SSH
+sudo systemctl restart ssh
+
+# Удаляем старый порт 22 из UFW
+sudo ufw delete allow 22/tcp
+```
+```4. Завершающая настройка безопасности
+
+# Запрещаем все входящие соединения по умолчанию
+sudo ufw default deny incoming
+
+# Финальная проверка
+sudo ufw status verbose
+```
+На данном сервере пришлось полностью переустановить ssh
 # Полная переустановка
 ```
 sudo apt purge openssh-server -y
