@@ -134,3 +134,26 @@ sudo tail -f /var/log/my-service.log
 # Все системные логи с нашим тегом
 sudo journalctl -t MY-SERVICE
 ```
+
+
+Команды для просмотра
+```
+# Поиск по определенному тегу (если настроили MY-SERVICE)
+sudo tail -f /var/log/syslog | grep MY-SERVICE
+
+# Если создали отдельный лог для сервиса
+sudo tail -f /var/log/my-service.log
+#
+sudo tail -n 5 /var/log/syslog
+
+
+# Посмотреть когда последний раз запускался logrotate
+sudo cat /var/lib/logrotate/status
+
+# Посмотреть историю выполнения
+sudo grep logrotate /var/log/syslog | tail -10
+
+# Проверить конфиг на ошибки
+sudo logrotate -d /etc/logrotate.d/docker
+```
+
